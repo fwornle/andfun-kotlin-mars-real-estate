@@ -83,11 +83,11 @@ dependencies {
 
     
     // Retrofit - Deprecated plugins - No more required
-    // implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
-    // implementation "com.squareup.retrofit2:converter-scalars:$version_retrofit"
+    implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
+    implementation "com.squareup.retrofit2:converter-scalars:$version_retrofit"
 
     // Retrofit with Moshi Converter
-    implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
+    // implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
 
     // Coroutines - Deprecated - No more required
     // implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_kotlin_coroutines"
@@ -101,6 +101,8 @@ dependencies {
 
     // RecyclerView
     implementation "androidx.recyclerview:recyclerview:$version_recyclerview"
+
+    // Retrofit
 
     // avoid multi-dex error
     // https://stackoverflow.com/questions/52801386/error-cannot-fit-requested-classes-in-a-single-dex-file-methods-67593-655
