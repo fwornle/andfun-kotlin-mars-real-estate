@@ -20,10 +20,10 @@ package com.example.android.marsrealestate.overview
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.android.marsrealestate.network.MarsApi
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.launch
+import java.lang.Exception
 
 /**
  * The [ViewModel] that is attached to the [OverviewFragment].
@@ -50,30 +50,17 @@ class OverviewViewModel : ViewModel() {
     private fun getMarsRealEstateProperties() {
 
         // send GET request to server
-        MarsApi.retrofitService.getProperties().enqueue(object: Callback<String> {
+        viewModelScope.launch {
 
-            // callback function for the GET request to the server
-            //
-            // Explanation:
-            // - 'MarsApi.retrofitService.getProperties()' returns a 'Call<String>' object
-            // - method 'enqueue' on this object needs a callback of type 'retrofit.Callback<T>'
-            // - anonymous object used to create an 'on-the-fly' instance of this class and
-            //   override its members for success/failure handling
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-
-                // set LiveData to the received response
-                _response.value = response.body()
-
+            // attempt to read data from server
+            try{
+                val listResult = MarsApi.retrofitService.getProperties()
+                _response.value = "Success: ${listResult.size} Mars properties retrieved"
+            } catch (e: Exception) {
+                _response.value = "Failure: ${e.message}"
             }
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
-
-                // set (mutable) LiveData to error message
-                _response.value = "Failure: " + t.message
-
-            }
-
-        })
+        }
 
         // this will be displayed until the above used Callback overwrites _response.value with
         // the body of the received response (or an error message from the server)

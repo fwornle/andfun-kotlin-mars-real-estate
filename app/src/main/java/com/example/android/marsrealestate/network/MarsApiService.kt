@@ -17,38 +17,33 @@
 
 package com.example.android.marsrealestate.network
 
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import kotlinx.coroutines.Deferred
 import retrofit2.Call
 import retrofit2.Retrofit
-import retrofit2.converter.scalars.ScalarsConverterFactory
-//import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 
 private const val BASE_URL = "https://mars.udacity.com/"
 
-// Retrofit builder
-// (deprecated, but seems to be the one that works, see below... 'Moshi')
-private val retrofit = Retrofit.Builder()
-    .addConverterFactory(ScalarsConverterFactory.create())
-    .baseUrl(BASE_URL)
+// Moshi builder
+private val moshi = Moshi.Builder()
+    .add(KotlinJsonAdapterFactory())
     .build()
 
-// NOTE:
-// with this Factory, the app throws an error upon trying to convert the received response (GET)
-//
-// (MoshiConverterFactory is obviously not the 'updated version' of ScalarsConverterFactory)
-//
-//private val retrofit = Retrofit.Builder()
-//    .addConverterFactory(MoshiConverterFactory.create())
-//    .baseUrl(BASE_URL)
-//    .build()
+// Retrofit builder
+private val retrofit = Retrofit.Builder()
+    .addConverterFactory(MoshiConverterFactory.create(moshi))
+    .baseUrl(BASE_URL)
+    .build()
 
 // service interface (exposed by retrofit library)
 interface MarsApiService {
 
     // HTTP GET for endpoint "realestate" --> returns "Mars properties data" (JSON)
     @GET("realestate")
-    fun getProperties():
-            Call<String>
+    suspend fun getProperties(): List<MarsProperty>
 
 }
 
