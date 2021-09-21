@@ -38,12 +38,12 @@ class OverviewViewModel : ViewModel() {
     val status: LiveData<String>
         get() = _status
 
-    // Mars property to be displayed
-    private val _property = MutableLiveData<MarsProperty>()
+    // list of Mars properties to be displayed
+    private val _properties = MutableLiveData<List<MarsProperty>>()
 
-    // external immutable LiveData for the selected MarsProperty
-    val property: LiveData<MarsProperty>
-        get() = _property
+    // external immutable LiveData for the list of MarsProperty
+    val properties: LiveData<List<MarsProperty>>
+        get() = _properties
 
 
     /**
@@ -67,7 +67,7 @@ class OverviewViewModel : ViewModel() {
 
                 // fetch first property (for display)
                 if(listResult.size > 0) {
-                    _property.value = listResult[0]
+                    _properties.value = listResult
                 }
 
                 _status.value = "Success: ${listResult.size} Mars properties retrieved"
