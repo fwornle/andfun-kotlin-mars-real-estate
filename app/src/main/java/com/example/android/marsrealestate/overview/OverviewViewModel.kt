@@ -26,16 +26,19 @@ import com.example.android.marsrealestate.network.MarsProperty
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
+// network API status
+enum class MarsApiStatus { LOADING, ERROR, DONE }
+
 /**
  * The [ViewModel] that is attached to the [OverviewFragment].
  */
 class OverviewViewModel : ViewModel() {
 
     // The internal MutableLiveData String that stores the status of the most recent request
-    private val _status = MutableLiveData<String>()
+    private val _status = MutableLiveData<MarsApiStatus>()
 
     // The external immutable LiveData for the request status String
-    val status: LiveData<String>
+    val status: LiveData<MarsApiStatus>
         get() = _status
 
     // list of Mars properties to be displayed
@@ -61,25 +64,19 @@ class OverviewViewModel : ViewModel() {
         // send GET request to server
         viewModelScope.launch {
 
+            // set initial status
+            _status.value = MarsApiStatus.LOADING
+
             // attempt to read data from server
             try{
-                val listResult = MarsApi.retrofitService.getProperties()
-
-                // fetch first property (for display)
-                if(listResult.size > 0) {
-                    _properties.value = listResult
-                }
-
-                _status.value = "Success: ${listResult.size} Mars properties retrieved"
+                _properties.value = MarsApi.retrofitService.getProperties()
+                _status.value = MarsApiStatus.DONE
             } catch (e: Exception) {
-                _status.value = "Failure: ${e.message}"
+                _properties.value = ArrayList()
+                _status.value = MarsApiStatus.ERROR
             }
 
         }
-
-        // this will be displayed until the above used Callback overwrites _response.value with
-        // the body of the received response (or an error message from the server)
-        _status.value = "Set the Mars API Response here!"
 
     }
 
