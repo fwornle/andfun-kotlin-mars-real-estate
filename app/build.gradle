@@ -15,10 +15,20 @@
  *
  */
 
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'androidx.navigation.safeargs'
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'androidx.navigation.safeargs'
+    id 'kotlin-parcelize'
+}
+
+//apply plugin: 'com.android.application'
+//apply plugin: 'kotlin-android'
+//apply plugin: 'kotlin-kapt'
+//apply plugin: 'androidx.navigation.safeargs'
+//apply plugin: 'kotlin-parcelize'
+
 
 android {
     compileSdkVersion 31
@@ -51,48 +61,48 @@ android {
     kotlinOptions {
         jvmTarget = '11'
     }
+    dependencies {
+        implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+        // Kotlin
+        implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version_kotlin"
+        implementation "org.jetbrains.kotlin:kotlin-stdlib:$version_kotlin"
+
+        // Android KTX
+        implementation "androidx.core:core-ktx:$version_core"
+
+        // Constraint Layout
+        implementation "androidx.constraintlayout:constraintlayout:$version_constraint_layout"
+
+        // ViewModel and LiveData
+        // implementation "androidx.lifecycle:lifecycle-extensions:$version_lifecycle_extensions"
+        implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$version_lifecycle"
+
+        // Navigation
+        implementation "androidx.navigation:navigation-fragment-ktx:$version_navigation"
+        implementation "androidx.navigation:navigation-ui-ktx:$version_navigation"
+
+        // Core with Ktx
+        implementation "androidx.core:core-ktx:$version_core"
+
+        // Moshi
+        implementation "com.squareup.moshi:moshi:$version_moshi"
+        implementation "com.squareup.moshi:moshi-kotlin:$version_moshi"
+
+
+        // Retrofit - Deprecated plugins - No more required
+        implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
+        implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
+
+        // Retrofit with Moshi Converter
+        implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
+
+        // Glide
+        implementation "com.github.bumptech.glide:glide:$version_glide"
+
+        // RecyclerView
+        implementation "androidx.recyclerview:recyclerview:$version_recyclerview"
+
+    }
 }
 
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version_kotlin"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$version_kotlin"
-
-    // Constraint Layout
-    implementation "androidx.constraintlayout:constraintlayout:$version_constraint_layout"
-
-    // Android KTX
-    implementation "androidx.core:core-ktx:$version_core"
-    
-    // ViewModel and LiveData
-    // implementation "androidx.lifecycle:lifecycle-extensions:$version_lifecycle_extensions"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$version_lifecycle"
-
-    // Navigation
-    implementation "androidx.navigation:navigation-fragment-ktx:$version_navigation"
-    implementation "androidx.navigation:navigation-ui-ktx:$version_navigation"
-
-    // Core with Ktx
-    implementation "androidx.core:core-ktx:$version_core"
-
-    // Moshi
-    implementation "com.squareup.moshi:moshi:$version_moshi"
-    implementation "com.squareup.moshi:moshi-kotlin:$version_moshi"
-
-    
-    // Retrofit - Deprecated plugins - No more required
-    implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
-    implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
-
-    // Retrofit with Moshi Converter
-    implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
-
-    // Glide
-    implementation "com.github.bumptech.glide:glide:$version_glide"
-
-    // RecyclerView
-    implementation "androidx.recyclerview:recyclerview:$version_recyclerview"
-
-}
