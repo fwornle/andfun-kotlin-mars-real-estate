@@ -21,6 +21,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.android.marsrealestate.R
 import com.example.android.marsrealestate.databinding.FragmentOverviewBinding
 
@@ -50,8 +51,29 @@ class OverviewFragment : Fragment() {
         // Giving the binding access to the OverviewViewModel
         binding.viewModel = viewModel
 
-        // set RV adapter
-        binding.photosGrid.adapter = PhotoGridAdapter()
+        // observer of LiveData 'navigateToSelectedProperty'
+        // - this performs the actual navigation to the details fragment
+        // - navigation done is indicated by clearing the selected property from
+        //   LiveData 'navigateToSelectedProperty' (null)
+        // - the data of the selected property has been sent to the details fragment as bundle
+        //   (safeArgs) --> this is why the data class had to be made 'Parcelize-able'
+        viewModel.navigateToSelectedProperty.observe(viewLifecycleOwner, {
+            if ( null != it ) {
+                this.findNavController().navigate(OverviewFragmentDirections.actionShowDetail(it))
+                viewModel.displayPropertyDetailsComplete()
+            }
+        })
+
+        // set RV adapter, using constructor parameter 'OnClickListener' to provide a lambda
+        // function, which is used during ViewHolder binding to install an OnClick listener to each
+        // RV view item, using the corresponding data element as parameter
+        //
+        // ... function 'displayPropertyDetails' sets the LiveData _navigateToSelectedProperty
+        // to the provided MarsProperty element (during ViewHolder binding) --> this is used to
+        // trigger navigation to the details fragment
+        binding.photosGrid.adapter = PhotoGridAdapter(PhotoGridAdapter.OnClickListener {
+            viewModel.displayPropertyDetails(it)
+        })
 
         setHasOptionsMenu(true)
         return binding.root

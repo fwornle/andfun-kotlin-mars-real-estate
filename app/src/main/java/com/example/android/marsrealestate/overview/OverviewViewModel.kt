@@ -34,19 +34,31 @@ enum class MarsApiStatus { LOADING, ERROR, DONE }
  */
 class OverviewViewModel : ViewModel() {
 
-    // The internal MutableLiveData String that stores the status of the most recent request
+    // LiveData for storing the status of the most recent request
     private val _status = MutableLiveData<MarsApiStatus>()
-
-    // The external immutable LiveData for the request status String
     val status: LiveData<MarsApiStatus>
         get() = _status
 
-    // list of Mars properties to be displayed
+    // LiveData for list of Mars properties to be displayed
     private val _properties = MutableLiveData<List<MarsProperty>>()
-
-    // external immutable LiveData for the list of MarsProperty
     val properties: LiveData<List<MarsProperty>>
         get() = _properties
+
+    // LiveData for navigation (implicitly by 'property selected' or not)
+    private val _navigateToSelectedProperty = MutableLiveData<MarsProperty>()
+    val navigateToSelectedProperty: LiveData<MarsProperty>
+        get() = _navigateToSelectedProperty
+
+    // setter function for when a property has been selected
+    // ... triggers navigation to 'details' fragment
+    fun displayPropertyDetails(marsProperty: MarsProperty) {
+        _navigateToSelectedProperty.value = marsProperty
+    }
+
+    // (re-)setter function for when navigation has been completed
+    fun displayPropertyDetailsComplete() {
+        _navigateToSelectedProperty.value = null
+    }
 
 
     /**
