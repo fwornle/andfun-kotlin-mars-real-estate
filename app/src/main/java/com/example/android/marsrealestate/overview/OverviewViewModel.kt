@@ -22,6 +22,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.marsrealestate.network.MarsApi
+import com.example.android.marsrealestate.network.MarsApiFilter
 import com.example.android.marsrealestate.network.MarsProperty
 import kotlinx.coroutines.launch
 import java.lang.Exception
@@ -65,13 +66,13 @@ class OverviewViewModel : ViewModel() {
      * Call getMarsRealEstateProperties() on init so we can display status immediately.
      */
     init {
-        getMarsRealEstateProperties()
+        getMarsRealEstateProperties(MarsApiFilter.SHOW_ALL)
     }
 
     /**
      * Sets the value of the status LiveData to the Mars API status.
      */
-    private fun getMarsRealEstateProperties() {
+    private fun getMarsRealEstateProperties(filter: MarsApiFilter) {
 
         // send GET request to server
         viewModelScope.launch {
@@ -81,7 +82,9 @@ class OverviewViewModel : ViewModel() {
 
             // attempt to read data from server
             try{
-                _properties.value = MarsApi.retrofitService.getProperties()
+                // this initiates the (HTTP) GET request, using the provided filter as parameter
+                // (... the URL ends on '?filter=<filter.value>' )
+                _properties.value = MarsApi.retrofitService.getProperties(filter.value)
                 _status.value = MarsApiStatus.DONE
             } catch (e: Exception) {
                 _properties.value = ArrayList()
@@ -90,6 +93,11 @@ class OverviewViewModel : ViewModel() {
 
         }
 
+    }
+
+    // method to change the filter (used from drop-down menu of the app)
+    fun updateFilter(filter: MarsApiFilter) {
+        getMarsRealEstateProperties(filter)
     }
 
 }
