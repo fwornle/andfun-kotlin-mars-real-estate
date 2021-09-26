@@ -46,8 +46,8 @@ class OverviewViewModel : ViewModel() {
         get() = _properties
 
     // LiveData for navigation (implicitly by 'property selected' or not)
-    private val _navigateToSelectedProperty = MutableLiveData<MarsProperty>()
-    val navigateToSelectedProperty: LiveData<MarsProperty>
+    private val _navigateToSelectedProperty = MutableLiveData<MarsProperty?>()
+    val navigateToSelectedProperty: LiveData<MarsProperty?>
         get() = _navigateToSelectedProperty
 
     // setter function for when a property has been selected
