@@ -7,8 +7,13 @@ buildscript {
         // navigation where the versions of the plugin needs to be the same as the version of the
         // library defined in the app Gradle file
         version_android_gradle_plugin = '7.0.2'
-        version_core = "1.6.0"
         version_kotlin = "1.5.31"
+
+        // explicit reference to library 'reflect' prevents inconsistent set of dependencies
+        // https://stackoverflow.com/questions/42569445/warning-kotlin-runtime-jar-files-in-the-classpath-should-have-the-same-version
+        version_reflect = "1.5.31"  // same as Kotlin
+
+        version_core = "1.6.0"
         version_parcelize = "1.5.31"
         version_lifecycle = "2.3.1"
         version_navigation = '2.3.5'

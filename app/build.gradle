@@ -19,7 +19,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'androidx.navigation.safeargs'
+    id 'androidx.navigation.safeargs.kotlin'  // .kotlin --> KTX: nav.action accepts param. ("it")
     id 'kotlin-parcelize'
 }
 
@@ -68,6 +68,10 @@ android {
         implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version_kotlin"
         implementation "org.jetbrains.kotlin:kotlin-stdlib:$version_kotlin"
 
+        // fix inconsistency between libs
+        // https://stackoverflow.com/questions/42569445/warning-kotlin-runtime-jar-files-in-the-classpath-should-have-the-same-version
+        implementation "org.jetbrains.kotlin:kotlin-reflect:$version_reflect"
+
         // Android KTX
         implementation "androidx.core:core-ktx:$version_core"
 
@@ -81,6 +85,7 @@ android {
         // Navigation
         implementation "androidx.navigation:navigation-fragment-ktx:$version_navigation"
         implementation "androidx.navigation:navigation-ui-ktx:$version_navigation"
+        //implementation "androidx.legacy:legacy-support-v4:1.0.0"
 
         // Moshi
         implementation "com.squareup.moshi:moshi:$version_moshi"
